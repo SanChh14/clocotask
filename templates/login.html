@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block body %}
+<div class="d-flex flex-column justify-content-center align-items-center p-5">
+    <div>
+        <h1>Admin Panel Login</h1>
+        <br>
+    </div>
+    <div>
+        <form action="" method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" class="form-control" id="email" name="email" placeholder="Enter Email" required><br>
+                <label for="password">Password</label>
+                <input type="password" class="form-control" id="password" name="password" placeholder="Password" required>
+              </div><br>
+              <button type="submit" class="btn btn-danger">Login</button>
+        </form>
+        <br>
+        <a href="/createnewuser"><button type="submit" class="btn btn-primary">Create a new user</button></a>
+    </div>
+    <br>
+    <div id="message" class="text-danger round p-0" style="opacity: 0.97; font-style: italic; font-weight: bold;">
+        {{error}}
+    </div>
+    <div id="success" class="text-success round p-0" style="opacity: 0.97; font-style: italic; font-weight: bold;">
+        {{success}}
+    </div>
+</div>
+{% endblock %}

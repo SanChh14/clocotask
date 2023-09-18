@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% block body %}
+<div class="d-flex flex-column justify-content-center align-items-center p-5">
+    <div class="d-flex justify-content-center" style="width:100%;">
+        <div>
+            <h1>Create A New User</h1>
+        </div>
+    </div>
+    <br>
+
+    <div class="d-flex justify-content-center" style="width:100%;">
+        <form action="" method="post" style="width:100%;">
+            {% csrf_token %}
+            <div class="form-group d-flex flex-column justify-content-center" style="width:100%;">
+                <label for="first_name">First Name</label>
+                <input type="text" class="form-control-sm mb-1" id="first_name" name="first_name" placeholder="Enter FirstName" required>
+                <label for="last_name">Last Name</label>
+                <input type="text" class="form-control-sm mb-1" id="last_name" name="last_name" placeholder="Enter LastName" required>
+                <label for="email">Email</label>
+                <input type="email" class="form-control-sm mb-1" id="email" name="email" placeholder="Enter Email" required>
+                <label for="password">Password</label>
+                <input type="password" minlength="6" class="form-control-sm mb-1" id="password" name="password" placeholder="Password" required>
+                <label for="phone">Phone <span style="font-style: italic; opacity: 0.97;">(10 Characters only)</span></label>
+                <input type="tel" class="form-control-sm mb-1" minlength="9" id="phone" name="phone" placeholder="Enter Phone" pattern="[0-9]{10}" required>
+                <label for="dob">Date Of Birth</label>
+                <input type="date" class="form-control-sm mb-1" id="dob" name="dob" required>
+                <label for="gender">Select Gender</label>
+                <select id="gender" class="form-control-sm mb-1" name="gender" required>
+                    <option value="M">Male</option>
+                    <option value="F">Female</option>
+                    <option value="O">Other</option>
+                </select>
+                <label for="address">Address</label>
+                <input type="text" class="form-control-sm mb-1" id="address" name="address" placeholder="Enter Address" required>
+            </div>
+            <div id="message" class="text-danger round p-0" style="opacity: 0.97; font-style: italic; font-weight: bold;">
+                <span>
+                    {{error}}
+                </span>
+            </div><br>
+            <button type="submit" class="btn btn-primary">Create User</button>
+        </form>
+    </div>
+    <br>
+    <div class="d-flex" style="width:100%;">
+        <a href="/"><button type="submit" class="btn btn-danger">Go Back</button></a>
+    </div>
+    <br>
+</div>
+
+{% endblock %}
