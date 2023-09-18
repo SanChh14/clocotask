@@ -8,4 +8,4 @@ def dashboard(request):
     if not request.user.is_authenticated:
         return redirect('/')
     else:
-        return render(request, 'songs.html', {})
+        return render(request, 'dashboard.html', {})
