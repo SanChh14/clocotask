@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+
+{% block css %}
+.forms{
+    width: 60%;
+}
+{% endblock %}
+
+{% block media %}
+
+@media only screen and (max-width: 1175px) {
+        .forms{
+            width:80%;
+        }
+}
+@media only screen and (max-width: 720px) {
+    .forms{
+        width:100%;
+    }
+}
+
+{% endblock %}
+
+{% block content %}
+<div class="d-flex flex-column justify-content-center align-items-center p-5">
+    <div class="d-flex justify-content-center" style="width:100%;">
+        <div class="p-0 m-0">
+            <h3>Create A New User</h3>
+        </div>
+    </div>
+    <br>
+
+    <div class="d-flex justify-content-center" style="width:100%;">
+        <div class="forms">
+            <form action="" method="post" style="width:100%;">
+                {% csrf_token %}
+                <div class="form-group d-flex flex-column justify-content-center" style="width:100%;">
+                    <label for="first_name">First Name</label>
+                    <input type="text" class="form-control-sm mb-1" id="first_name" name="first_name" placeholder="Enter FirstName" value="{{fields.0}}" required>
+                    <label for="last_name">Last Name</label>
+                    <input type="text" class="form-control-sm mb-1" id="last_name" name="last_name" placeholder="Enter LastName" value="{{fields.1}}" required>
+                    <label for="email">Email</label>
+                    <input type="email" class="form-control-sm mb-1" id="email" name="email" placeholder="Enter Email" value="{{fields.2}}" required>
+                    <label for="password">Password</label>
+                    <input type="password" minlength="6" class="form-control-sm mb-1" id="password" name="password" placeholder="Password" value="{{fields.3}}" required>
+                    <label for="phone">Phone</label>
+                    <input type="tel" class="form-control-sm mb-1" minlength="9" id="phone" name="phone" placeholder="Enter Phone" value="{{fields.4}}" required>
+                    <label for="dob">Date Of Birth</label>
+                    <input type="date" class="form-control-sm mb-1" id="dob" name="dob" value="{{fields.5}}" required>
+                    <label for="gender">Select Gender</label>
+                    <select id="gender" class="form-control-sm mb-1" name="gender" required>
+                        <option value="M" {% if fields.6 == 'M' %}selected{% endif %}>Male</option>
+                        <option value="F"{% if fields.6 == 'F' %}selected{% endif %}>Female</option>
+                        <option value="O"{% if fields.6 == 'O' %}selected{% endif %}>Other</option>
+                    </select>
+                    <label for="address">Address</label>
+                    <input type="text" class="form-control-sm mb-1" id="address" name="address" placeholder="Enter Address" value="{{fields.0}}" required>
+                </div>
+                <div id="message" class="text-danger round p-0" style="opacity: 0.97; font-style: italic; font-weight: bold;">
+                    <span>
+                        {{error}}
+                    </span>
+                </div><br>
+                <button type="submit" class="btn btn-primary">Create User</button>
+            </form>
+            <br>
+            <div class="d-flex" style="width:100%;">
+                <a href="/"><button type="submit" class="btn btn-danger">Go Back</button></a>
+            </div>
+            <br>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

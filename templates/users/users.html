@@ -55,7 +55,7 @@
 
 {% block content %}
 <div class="row mb-3">
-    <div class="d-none d-lg-block col-sm-12 col-lg-3 px-4 ">
+    <div class="d-none d-lg-block col-sm-12 col-lg-3 px-4">
         <div class="row mb-3 main-box">
             <div class="sidebox-text px-2 py-1 mb-0">
               Menu
@@ -66,12 +66,12 @@
               <div class="row sidebox-menu py-1">
                 <div class="col-12 p-0 m-0" style="color:#e61d2f;">
                     <i>-> </i>
-                      <a class="menu-options activetab" href="{% url 'dashboard' %}">Home</a>
+                      <a class="menu-options" href="{% url 'dashboard' %}">Home</a>
                     <br>
                 </div>
                 <div class="col-12 p-0 m-0" style="color:#e61d2f;">
                     <i>-> </i>
-                      <a class="menu-options" href="{% url 'users' %}">Users</a>
+                      <a class="menu-options {% if activetab == 'users' %}activetab{% endif %}" href="{% url 'users' %}">Users</a>
                     <br>
                 </div>
                 <div class="col-12 p-0 m-0" style="color:#e61d2f;">
@@ -83,68 +83,60 @@
             </div>
         </div>
     </div>
+
     <div class="col-sm-12 col-lg-9 px-4">
         <div class="row main-box">
             <div class="col-12 box-top py-1">
-                Welcome to Admin Panel
+                <a class="link" href="{% url 'dashboard' %}">Dashboard</a> / <a class="link" href="{% url 'users' %}">Users</a>
             </div>
             <div class="col-12 box-content px-0 px-lg-4">
                 <div class="mt-2">
                     <div class="sidebox-text px-2 py-1 mb-0">
-                        <a href="{% url 'users' %}" class="link">Users</a>
-                      </div>
-                      <div class="col-12 mt-0 pt-0" style="background:#333; height:3px;">
-                      </div>
-                      <div class="col-12 sidebox-menus">
+                        <span class="link">Recently Created Users</span>
+                    </div>
+                    <div class="col-12 mt-0 pt-0" style="background:#333; height:3px;">
+                    </div>
+                    <div class="col-12 sidebox-menus">
                         <div class="row sidebox-menu py-1">
-                          <div class="col-12 p-0 m-0" style="color:#e61d2f;">
-                              <i>-> </i>
-                                <a class="menu-options" href="{% url 'allusers' %}">View All Users</a>
-                              <br>
-                          </div>
-                          <div class="col-12 p-0 m-0" style="color:#e61d2f;">
-                              <i>-> </i>
-                                <a class="menu-options" href="{% url 'users_createuser' %}">Create A New User</a>
-                              <br>
-                          </div>
-                          <div class="col-12 p-0 m-0" style="color:#e61d2f;">
-                            <i>-> </i>
-                              <a class="menu-options" href="{% url 'modifyuser' %}">Modify Existing Users</a>
-                            <br>
+                            {% for user in users %}
+                            <div class="col-12 p-0 m-0" style="color:#e61d2f;">
+                                <i>-> </i>
+                                <a class="menu-options" href="{% url 'users' %}{{user.id}}">{{user.first_name.upper}} {{user.last_name.upper}} <span class="small">({{user.email}})</span></a>
+                                <br>
+                            </div>
+                            {% endfor %}
+                            <div class="col-12 p-0 m-0" style="color:#e61d2f;">
+                                <i>--> </i>
+                                <a class="menu-options u " href="{% url 'allusers' %}">(<u>View All</u>)</a>
+                                <br>
+                            </div>
                         </div>
-                        </div>
-                      </div>
+                    </div>
                 </div>
                 <div class="pb-2">
                     <div class="sidebox-text px-2 py-1 mb-0">
-                        <a href="{% url 'artists' %}" class="link">Artists</a>
-                      </div>
-                      <div class="col-12 mt-0 pt-0" style="background:#333; height:3px;">
-                      </div>
-                      <div class="col-12 sidebox-menus">
+                        <span class="link">Other Options</span>
+                    </div>
+                    <div class="col-12 mt-0 pt-0" style="background:#333; height:3px;">
+                    </div>
+                    <div class="col-12 sidebox-menus">
                         <div class="row sidebox-menu py-1">
-                          <div class="col-12 p-0 m-0" style="color:#e61d2f;">
-                              <i>-> </i>
-                                <a class="menu-options" href="">View All Artists</a>
-                              <br>
-                          </div>
-                          <div class="col-12 p-0 m-0" style="color:#e61d2f;">
-                              <i>-> </i>
-                                <a class="menu-options" href="">Add A New Artist</a>
-                              <br>
-                          </div>
-                          <div class="col-12 p-0 m-0" style="color:#e61d2f;">
+                            <div class="col-12 p-0 m-0" style="color:#e61d2f;">
+                                    <i>-> </i>
+                                    <a class="menu-options" href="{% url 'users_createuser' %}">Create A New User</a>
+                                    <br>
+                            </div>
+                            <div class="col-12 p-0 m-0" style="color:#e61d2f;">
                             <i>-> </i>
-                              <a class="menu-options" href="">Modify Existing Artist</a>
+                                <a class="menu-options" href="{% url 'modifyuser' %}">Modify Existing Users</a>
                             <br>
+                            </div>
                         </div>
-                        </div>
-                      </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 {% endblock %}
 
 {% block scripts %}

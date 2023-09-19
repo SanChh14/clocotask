@@ -1,0 +1,182 @@
+{% extends 'base.html' %}
+
+{% block css %}
+.main-box{
+  border-radius:3px;
+  -webkit-border-radius:3px;
+  -webkit-box-shadow: 0 2px 3px rgb(0 0 0 / 10%);
+  -khtml-box-shadow: 0 2px 3px rgba(0,0,0,.1);
+  -moz-box-shadow: 0 2px 3px rgba(0,0,0,.1);
+  -ms-box-shadow: 0 2px 3px rgba(0,0,0,.1);
+  -o-box-shadow: 0 2px 3px rgba(0,0,0,.1);
+  box-shadow: 0 2px 3px rgb(0 0 0 / 10%);
+  background: rgba(255,255,255,.05);
+  overflow:hidden;
+}
+.box-top{
+  background:#a11421;
+  font-size: 18px;
+  font-weight:500;
+}
+.sidebox-text{
+  font-size: 18px;
+}
+.sidebox-menus{
+  padding: 10px 5px 0px 5px;
+}
+.sidebox-menu{
+  margin-bottom: 10px;
+  padding: 10px 10px;
+  background:#1c1f22;
+  border-radius: 5px;
+  margin-left: 0px;
+  margin-right: 0px;
+  transition: 0.5s ease;
+}
+.sidebox-menus i{
+    font-size: 20px;
+  transition: 0.5s ease;
+}
+.sidebox-menu:hover{
+  background:#333538;
+}
+.menu-options{
+  color:rgba(255,255,255,.8);
+  font-size: 16px;
+  transition: 0.2s ease;
+}
+.menu-options:hover{
+  color: #e61d2f;
+}
+.activetab{
+  color: #e61d2f;
+}
+.detail-text{
+    color:rgba(255,255,255,.8);
+    font-size: 16px;
+}
+.forms{
+    width: 60%;
+}
+{% endblock %}
+
+{% block media %}
+@media only screen and (max-width: 1175px) {
+        .forms{
+            width:80%;
+        }
+}
+@media only screen and (max-width: 720px) {
+    .forms{
+        width:100%;
+    }
+}
+{% endblock %}
+
+{% block content %}
+<div class="row mb-3">
+    <div class="d-none d-lg-block col-sm-12 col-lg-3 px-4">
+        <div class="row mb-3 main-box">
+            <div class="sidebox-text px-2 py-1 mb-0">
+              Menu
+            </div>
+            <div class="col-12 mt-0 pt-0" style="background:#333; height:3px;">
+            </div>
+            <div class="col-12 sidebox-menus">
+              <div class="row sidebox-menu py-1">
+                <div class="col-12 p-0 m-0" style="color:#e61d2f;">
+                    <i>-> </i>
+                      <a class="menu-options" href="{% url 'dashboard' %}">Home</a>
+                    <br>
+                </div>
+                <div class="col-12 p-0 m-0" style="color:#e61d2f;">
+                    <i>-> </i>
+                      <a class="menu-options {% if activetab == 'users' %}activetab{% endif %}" href="{% url 'users' %}">Users</a>
+                    <br>
+                </div>
+                <div class="col-12 p-0 m-0" style="color:#e61d2f;">
+                    <i>-> </i>
+                      <a class="menu-options" href="{% url 'artists' %}">Artists</a>
+                    <br>
+                </div>
+              </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-12 col-lg-9 px-4">
+        <div class="row main-box">
+            <div class="col-12 box-top py-1">
+                <a class="link" href="{% url 'dashboard' %}">Dashboard</a> / <a class="link" href="{% url 'users' %}">Users</a>
+            </div>
+            <div class="col-12 box-content px-0 px-lg-4">
+                <div class="mt-2 pb-2">
+                    <div class="sidebox-text px-2 py-1 mb-0">
+                        <a href="{% url 'modifyuser' %}?page={{page}}" class="link">< Update User Details</a>
+                    </div>
+                    <div class="col-12 mt-0 pt-0" style="background:#333; height:3px;">
+                    </div>
+                    <div class="col-12 sidebox-menus">
+                        <div class="row sidebox-menu py-1">
+                            <div class="col-12 p-0 m-0" style="color:#e61d2f;">
+                                <div class="d-flex justify-content-center" style="width:100%;">
+                                    <div class="forms">
+                                        <form action="" method="post" style="width:100%;">
+                                            {% csrf_token %}
+                                            <div class="form-group d-flex flex-column justify-content-center" style="width:100%;">
+                                                <label for="first_name">First Name</label>
+                                                <input type="text" class="form-control-sm mb-1" id="first_name" name="first_name" placeholder="Enter FirstName" value="{{fields.0}}" required>
+                                                <label for="last_name">Last Name</label>
+                                                <input type="text" class="form-control-sm mb-1" id="last_name" name="last_name" placeholder="Enter LastName" value="{{fields.1}}" required>
+                                                <label for="email">Email</label>
+                                                <input type="email" class="form-control-sm mb-1" id="email" name="email" placeholder="Enter Email" value="{{fields.2}}" required>
+                                                <label for="password">Password <span class="small">(Leave Blank To Not Make Any Changes)</span></label>
+                                                <input type="password" class="form-control-sm mb-1" id="password" name="password" placeholder="Enter Password" value="{{fields.3}}">
+                                                <label for="phone">Phone</label>
+                                                <input type="tel" class="form-control-sm mb-1" minlength="9" id="phone" name="phone" placeholder="Enter Phone" value="{{fields.4}}" required>
+                                                <label for="dob">Date Of Birth</label>
+                                                <input type="date" class="form-control-sm mb-1" id="dob" name="dob" value="{{fields.5}}" required>
+                                                <label for="gender">Select Gender</label>
+                                                <select id="gender" class="form-control-sm mb-1" name="gender" required>
+                                                    <option value="M" {% if fields.6 == 'M' %}selected{% endif %}>Male</option>
+                                                    <option value="F"{% if fields.6 == 'F' %}selected{% endif %}>Female</option>
+                                                    <option value="O"{% if fields.6 == 'O' %}selected{% endif %}>Other</option>
+                                                </select>
+                                                <label for="address">Address</label>
+                                                <input type="text" class="form-control-sm mb-1" id="address" name="address" placeholder="Enter Address" value="{{fields.7}}" required>
+                                                <input type="hidden" id="pk" name="pk" value="{{fields.8}}">
+                                                <input type="hidden" id="page" name="page" value="{{page}}">
+                                                <input type="hidden" id="delete" name="delete" value="no">
+                                            </div>
+                                            <div id="message" class="text-danger round p-0" style="opacity: 0.97; font-style: italic; font-weight: bold;">
+                                                  {{error}}
+                                            </div>
+                                            <div id="success" class="text-success round p-0" style="opacity: 0.97; font-style: italic; font-weight: bold;">
+                                                {{success}}
+                                            </div>
+                                            <br>
+                                            <button type="submit" class="btn btn-primary">Update info</button>
+                                        </form>
+                                        <br>
+                                        <form action="" method="post">
+                                          {% csrf_token %}
+                                          <input type="hidden" id="pk" name="pk" value="{{fields.8}}">
+                                          <input type="hidden" id="delete" name="delete" value="yes">
+                                          <div class="d-flex" style="width:100%;">
+                                            <button type="submit" class="btn btn-danger">Delete User</button>
+                                          </div>
+                                        </form>
+                                        <br>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+{% endblock %}

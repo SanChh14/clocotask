@@ -55,7 +55,7 @@
 
 {% block content %}
 <div class="row mb-3">
-    <div class="d-none d-lg-block col-sm-12 col-lg-3 px-4 ">
+    <div class="d-none d-lg-block col-sm-12 col-lg-3 px-4">
         <div class="row mb-3 main-box">
             <div class="sidebox-text px-2 py-1 mb-0">
               Menu
@@ -66,17 +66,17 @@
               <div class="row sidebox-menu py-1">
                 <div class="col-12 p-0 m-0" style="color:#e61d2f;">
                     <i>-> </i>
-                      <a class="menu-options activetab" href="{% url 'dashboard' %}">Home</a>
+                      <a class="menu-options" href="{% url 'dashboard' %}">Home</a>
                     <br>
                 </div>
                 <div class="col-12 p-0 m-0" style="color:#e61d2f;">
                     <i>-> </i>
-                      <a class="menu-options" href="{% url 'users' %}">Users</a>
+                      <a class="menu-options {% if activetab == 'users' %}activetab{% endif %}" href="{% url 'users' %}">Users</a>
                     <br>
                 </div>
                 <div class="col-12 p-0 m-0" style="color:#e61d2f;">
                     <i>-> </i>
-                      <a class="menu-options" href="{% url 'artists' %}">Artists</a>
+                      <a class="menu-options {% if activetab == 'artists' %}activetab{% endif %}" href="{% url 'artists' %}">Artists</a>
                     <br>
                 </div>
               </div>
@@ -99,17 +99,17 @@
                         <div class="row sidebox-menu py-1">
                           <div class="col-12 p-0 m-0" style="color:#e61d2f;">
                               <i>-> </i>
-                                <a class="menu-options" href="{% url 'allusers' %}">View All Users</a>
+                                <a class="menu-options" href="">View All Users</a>
                               <br>
                           </div>
                           <div class="col-12 p-0 m-0" style="color:#e61d2f;">
                               <i>-> </i>
-                                <a class="menu-options" href="{% url 'users_createuser' %}">Create A New User</a>
+                                <a class="menu-options" href="">Create A New User</a>
                               <br>
                           </div>
                           <div class="col-12 p-0 m-0" style="color:#e61d2f;">
                             <i>-> </i>
-                              <a class="menu-options" href="{% url 'modifyuser' %}">Modify Existing Users</a>
+                              <a class="menu-options" href="">Modify Existing Users</a>
                             <br>
                         </div>
                         </div>

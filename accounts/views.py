@@ -25,19 +25,23 @@ def createNewUser(request):
                 gender = request.POST.get('gender').strip()
                 address = request.POST.get('address').strip()
 
+                fields = [first_name, last_name, email, password, phone, dob, gender, address]
+                
                 #Validating user info
                 if len(password) < 6:
-                    return render(request, 'createuser.html',{'error':'Password should be at least 6 characters.'})
+                    return render(request, 'accounts/createuser.html',{'error':'Password should be at least 6 characters.', 'activetab': 'createuser', 'fields': fields})
                 if list(User.objects.filter(email=email)) != []:
-                    return render(request, 'createuser.html',{'error':'Email already exists.'})
+                    return render(request, 'accounts/createuser.html',{'error':'Email already exists.', 'activetab': 'createuser', 'fields': fields})
+                if len(phone) == 0:
+                    return render(request, 'accounts/createuser.html', {'error':'Phone number cannot be empty.', 'activetab': 'createuser', 'fields': fields})
                 if list(User.objects.filter(phone=phone)) != []:
-                    return render(request, 'createuser.html', {'error':'Phone number already exists.'})
+                    return render(request, 'accounts/createuser.html', {'error':'Phone number already exists.', 'activetab': 'createuser', 'fields': fields})
                 try:
                     dob = datetime.strptime(dob, '%Y-%m-%d').date()
                     if dob > datetime.now().date():
-                        return render(request, 'createuser.html', {'error':'Enter correct date of birth.'})
+                        return render(request, 'accounts/createuser.html', {'error':'Enter correct date of birth.', 'activetab': 'createuser', 'fields': fields})
                 except:
-                    return render(request, 'createuser.html', {'error':'Enter correct date of birth.'})
+                    return render(request, 'accounts/createuser.html', {'error':'Enter correct date of birth.', 'activetab': 'createuser', 'fields': fields})
 
                 #Creating the user            
                 user = User.objects.create_superuser(email=email, password=password, phone=phone)
@@ -50,9 +54,9 @@ def createNewUser(request):
                 request.session['success'] = 'Account Created Successfully'
                 return redirect('/')
             except:
-                return render(request, 'createuser.html',{'error':'Fill out all the fields correctly.'})
+                return render(request, 'accounts/createuser.html',{'error':'Fill out all the fields correctly.', 'activetab': 'createuser', 'fields': fields})
         else:
-            return render(request, 'createuser.html', {})
+            return render(request, 'accounts/createuser.html', {'activetab': 'createuser'})
 
 def login(request):
     if request.user.is_authenticated:
@@ -69,7 +73,7 @@ def login(request):
                 auth_login(request, user)
                 return redirect('/dashboard/')
             else:
-                return render(request, 'login.html', {'error':'Invalid email or password!'})
+                return render(request, 'accounts/login.html', {'error':'Invalid email or password!', 'activetab': 'login'})
         else:
             if request.session.get('success') != None:
                 success = request.session.get('success')
@@ -78,9 +82,10 @@ def login(request):
                 success = ''
             return render(
                 request, 
-                'login.html', 
+                'accounts/login.html', 
                 {
                     'message':'',
                     'success':success,
+                    'activetab': 'login',
                 }
                 )

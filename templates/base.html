@@ -130,6 +130,10 @@
       #side-menu.active{
         left: 0px;
       }
+      .pagesnav{
+        padding-left: 10px;
+        padding-right: 10px;
+      }
       .activetab{
         color: #e61d2f;
       }
@@ -146,7 +150,7 @@
       <div class="d-flex flex-row justify-content-center align-items-center" style="height:70px;">
         <div class="site-logo">
           <h1 class="font-weight-heavy">
-            <a href="/" class = "link">
+            <a href="{% if user_name %}{% url 'dashboard' %}{% else %}/{% endif %}" class = "link">
               <span class="activetab">Admin</span>Panel
             </a>
           </h1>
@@ -163,7 +167,7 @@
       </div>
     </div>
 
-    <div id="side-menu">
+    <div class="d-lg-none" id="side-menu">
       <div class="d-flex mt-5 justify-content-around align-items-center">
         <div class="">
           MENU
@@ -175,20 +179,44 @@
       <div class="row mt-2">
         <div class="col">
           <div class="d-flex flex-column align-items-center">
+            {% if user_name %}
             <div class="">
-              <a href=" " class="link {% if activetab == "home" %}activetab{% endif %}">
+              <a href="{% url 'dashboard' %}" class="link {% if activetab == "dashboard" %}activetab{% endif %}">
+                <div class="py-2">
+                  Home
+                </div>
+              </a>
+            </div>
+            <div class="">
+              <a href="{% url 'users' %}" class="link {% if activetab == "users" %}activetab{% endif %}">
                 <div class="py-2">
                   Users
                 </div>
               </a>
             </div>
             <div class="">
-              <a href=" " class="link {% if activetab == "anime" %}activetab{% endif %}">
+              <a href="{% url 'artists' %}" class="link {% if activetab == "artists" %}activetab{% endif %}">
                 <div class="py-2">
                   Artists
                 </div>
               </a>
             </div>
+            {% else %}
+            <div class="">
+              <a href="{% url 'login' %}" class="link {% if activetab == "login" %}activetab{% endif %}">
+                <div class="py-2">
+                  Login
+                </div>
+              </a>
+            </div>
+            <div class="">
+              <a href="{% url 'createuser' %}" class="link {% if activetab == "createuser" %}activetab{% endif %}">
+                <div class="py-2">
+                  Register
+                </div>
+              </a>
+            </div>
+            {% endif %}
           </div>
         </div>
       </div>
@@ -198,7 +226,7 @@
     <!-- Login Register -->
     <div class="text-center m-0 login" style = "background:rgba(255,255,255,.05); font-weight:500; padding: 5px;">
       {% if user_name %}
-      <i><a class="link" href="/" style="text-decoration: none;">{{user_name}}</a><span class="unselectable">  |  </span><a class="link" href="/logout" style="text-decoration: none;">LogOut</a></i>
+      <i><a class="link" href="{% url 'dashboard' %}" style="text-decoration: none;">{{user_name}}</a><span class="unselectable">  |  </span><a class="link" href="/logout" style="text-decoration: none;">LogOut</a></i>
       {% else %}
       <i><a class="link" href="/" style="text-decoration: none;">Login</a><span class="unselectable">  |  </span><a class="link" href="/createnewuser" style="text-decoration: none;">Register</a></i>
       {% endif %}
@@ -217,7 +245,7 @@
         <div class="col-12 col-lg-6 text-center text-lg-left px-4 pb-3 pt-lg-3">
           <div class="site-logo">
             <h1 class="font-weight-heavy mb-1">
-              <a href="/" class = "link"><span class="activetab">Admin</span>Panel</a>
+              <a href="{% if user_name %}{% url 'dashboard' %}{% else %}/{% endif %}" class = "link"><span class="activetab">Admin</span>Panel</a>
             </h1>
             Copyright © cloco.com.np All Rights Reserved<br>
             <div class="small mt-2" style="opacity:0.8">
@@ -230,12 +258,24 @@
             <div class="mb-2">
               <span class="activetab" style="font-size:14px;">LINKS</span>
             </div>
+            {% if user_name %}
             <div class="mb-2 p-0" style="border-left:1px dotted;font-size:13px;">
-              <a href="/" class="link"><span class="unselectable">  Login</span></a>
+              <a href="{% url 'dashboard' %}" class="link"><span class="unselectable">  Home</span></a>
             </div>
             <div class="mb-2 p-0" style="border-left:1px dotted;font-size:13px;">
-              <a href="/createnewuser" class="link"><span class="unselectable">  Register</span></a>
+              <a href="{% url 'users' %}" class="link"><span class="unselectable">  Users</span></a>
             </div>
+            <div class="mb-2 p-0" style="border-left:1px dotted;font-size:13px;">
+              <a href="{% url 'artists' %}" class="link"><span class="unselectable">  Artists</span></a>
+            </div>
+            {% else %}
+            <div class="mb-2 p-0" style="border-left:1px dotted;font-size:13px;">
+              <a href="{% url 'login' %}" class="link"><span class="unselectable">  Login</span></a>
+            </div>
+            <div class="mb-2 p-0" style="border-left:1px dotted;font-size:13px;">
+              <a href="{% url 'createuser' %}" class="link"><span class="unselectable">  Register</span></a>
+            </div>
+            {% endif %}
           </div>
         </div>
       </div>

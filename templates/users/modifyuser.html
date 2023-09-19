@@ -1,0 +1,144 @@
+{% extends 'base.html' %}
+
+{% block css %}
+.main-box{
+  border-radius:3px;
+  -webkit-border-radius:3px;
+  -webkit-box-shadow: 0 2px 3px rgb(0 0 0 / 10%);
+  -khtml-box-shadow: 0 2px 3px rgba(0,0,0,.1);
+  -moz-box-shadow: 0 2px 3px rgba(0,0,0,.1);
+  -ms-box-shadow: 0 2px 3px rgba(0,0,0,.1);
+  -o-box-shadow: 0 2px 3px rgba(0,0,0,.1);
+  box-shadow: 0 2px 3px rgb(0 0 0 / 10%);
+  background: rgba(255,255,255,.05);
+  overflow:hidden;
+}
+.box-top{
+  background:#a11421;
+  font-size: 18px;
+  font-weight:500;
+}
+.sidebox-text{
+  font-size: 18px;
+}
+.sidebox-menus{
+  padding: 10px 5px 0px 5px;
+}
+.sidebox-menu{
+  margin-bottom: 10px;
+  padding: 10px 10px;
+  background:#1c1f22;
+  border-radius: 5px;
+  margin-left: 0px;
+  margin-right: 0px;
+  transition: 0.5s ease;
+}
+.sidebox-menus i{
+    font-size: 20px;
+  transition: 0.5s ease;
+}
+.sidebox-menu:hover{
+  background:#333538;
+}
+.menu-options{
+  color:rgba(255,255,255,.8);
+  font-size: 16px;
+  transition: 0.2s ease;
+}
+.menu-options:hover{
+  color: #e61d2f;
+}
+.activetab{
+  color: #e61d2f;
+}
+{% endblock %}
+
+{% block content %}
+<div class="row mb-3">
+    <div class="d-none d-lg-block col-sm-12 col-lg-3 px-4">
+        <div class="row mb-3 main-box">
+            <div class="sidebox-text px-2 py-1 mb-0">
+              Menu
+            </div>
+            <div class="col-12 mt-0 pt-0" style="background:#333; height:3px;">
+            </div>
+            <div class="col-12 sidebox-menus">
+              <div class="row sidebox-menu py-1">
+                <div class="col-12 p-0 m-0" style="color:#e61d2f;">
+                    <i>-> </i>
+                      <a class="menu-options" href="{% url 'dashboard' %}">Home</a>
+                    <br>
+                </div>
+                <div class="col-12 p-0 m-0" style="color:#e61d2f;">
+                    <i>-> </i>
+                      <a class="menu-options {% if activetab == 'users' %}activetab{% endif %}" href="{% url 'users' %}">Users</a>
+                    <br>
+                </div>
+                <div class="col-12 p-0 m-0" style="color:#e61d2f;">
+                    <i>-> </i>
+                      <a class="menu-options" href="{% url 'artists' %}">Artists</a>
+                    <br>
+                </div>
+              </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-12 col-lg-9 px-4">
+        <div class="row main-box">
+            <div class="col-12 box-top py-1">
+                <a class="link" href="{% url 'dashboard' %}">Dashboard</a> / <a class="link" href="{% url 'users' %}">Users</a>
+            </div>
+            <div class="col-12 box-content px-0 px-lg-4">
+                <div class="mt-2 pb-2">
+                    <div class="sidebox-text px-2 py-1 mb-0">
+                        <a href="{% url 'users' %}" class="link">< Modify Users</a>
+                    </div>
+                    <div class="col-12 mt-0 pt-0" style="background:#333; height:3px;">
+                    </div>
+                    <div class="col-12 sidebox-menus">
+                        <!-- users -->
+                        <div class="row sidebox-menu py-1">
+                            {% for user in users %}
+                            <div class="col-12 p-0 m-0" style="color:#e61d2f;">
+                                <i>-> </i>
+                                <a class="menu-options" href="{% url 'modifyuser' %}{{user.id}}?page={{page}}">{{user.first_name.upper}} {{user.last_name.upper}} <span class="small">({{user.email}})</span></a>
+                                <br>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        <div id="success" class="text-danger round p-0 mb-2 justify-content-center d-flex" style="opacity: 0.97; font-style: italic; font-weight: bold;">
+                            {{success}}
+                        </div>
+                        <!-- Pagination -->
+                        <div class="row sidebox-menu py-1">
+                            <div class="col mx-2">
+                                <div class="row">
+                                  <div class="col-12 d-flex justify-content-center mb-1">
+                                    <span style="font-size:16px; color:#e61d2f; font-weight:500;">
+                                      Pages
+                                    </span>
+                                  </div>
+                                </div>
+                                <div class="row">
+                                  <div class="col-12 d-flex justify-content-center">
+                                    {% for p in pages %}
+                                      <div class="">
+                                        <a class="link pagesnav {% if page == p %}activetab{% endif %}" href="{% url 'modifyuser' %}?page={{p}}">
+                                          <span class="unselectable" style="font-size:20px;">{{p}}</span>
+                                        </a>
+                                      </div>
+                                    {% endfor %}
+                                  </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+{% endblock %}
