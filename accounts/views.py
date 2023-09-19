@@ -1,5 +1,4 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
 from django.contrib.auth import get_user_model
 from datetime import datetime
@@ -13,7 +12,7 @@ def logout(request):
 
 def createNewUser(request):
     if request.user.is_authenticated:
-        return redirect('/dashboard')
+        return redirect('/dashboard/')
     else:
         if request.method == 'POST':
             try:
@@ -25,7 +24,6 @@ def createNewUser(request):
                 dob = request.POST.get('dob').strip()
                 gender = request.POST.get('gender').strip()
                 address = request.POST.get('address').strip()
-                print(address)
 
                 #Validating user info
                 if len(password) < 6:
@@ -36,7 +34,7 @@ def createNewUser(request):
                     return render(request, 'createuser.html', {'error':'Phone number already exists.'})
                 try:
                     dob = datetime.strptime(dob, '%Y-%m-%d').date()
-                    if dob >= datetime.now().date():
+                    if dob > datetime.now().date():
                         return render(request, 'createuser.html', {'error':'Enter correct date of birth.'})
                 except:
                     return render(request, 'createuser.html', {'error':'Enter correct date of birth.'})
@@ -58,7 +56,7 @@ def createNewUser(request):
 
 def login(request):
     if request.user.is_authenticated:
-        return redirect('/dashboard')
+        return redirect('/dashboard/')
     else:
         if request.method == 'POST':
             email = request.POST.get('email')
@@ -69,7 +67,7 @@ def login(request):
                 user = None
             if user:
                 auth_login(request, user)
-                return redirect('/dashboard')
+                return redirect('/dashboard/')
             else:
                 return render(request, 'login.html', {'error':'Invalid email or password!'})
         else:

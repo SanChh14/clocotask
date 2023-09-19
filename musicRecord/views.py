@@ -8,4 +8,5 @@ def dashboard(request):
     if not request.user.is_authenticated:
         return redirect('/')
     else:
-        return render(request, 'dashboard.html', {})
+        user_name = request.user.first_name.upper()+' '+request.user.last_name.upper()
+        return render(request, 'dashboard.html', {'user_name': user_name})
