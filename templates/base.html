@@ -226,7 +226,7 @@
     <!-- Login Register -->
     <div class="text-center m-0 login" style = "background:rgba(255,255,255,.05); font-weight:500; padding: 5px;">
       {% if user_name %}
-      <i><a class="link" href="{% url 'dashboard' %}" style="text-decoration: none;">{{user_name}}</a><span class="unselectable">  |  </span><a class="link" href="/logout" style="text-decoration: none;">LogOut</a></i>
+      <i><span class="link unselectable">{{user_name}}</span><span class="unselectable">  |  </span><a class="link" href="/logout" style="text-decoration: none;">LogOut</a></i>
       {% else %}
       <i><a class="link" href="/" style="text-decoration: none;">Login</a><span class="unselectable">  |  </span><a class="link" href="/createnewuser" style="text-decoration: none;">Register</a></i>
       {% endif %}

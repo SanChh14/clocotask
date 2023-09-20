@@ -17,7 +17,10 @@ class Artist(models.Model):
 
     @property
     def first_release_year(self):
-        return self.first_release_date.year
+        if self.first_release_date is not None:
+            return self.first_release_date.year
+        else:
+            return ''
 
     def __str__(self):
         return self.name

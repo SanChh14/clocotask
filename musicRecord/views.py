@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import get_user_model
+from .models import Artist
 
 User = get_user_model()
 
@@ -19,11 +20,12 @@ def users(request):
         return redirect('/')
     else:
         users = User.objects.all().order_by('-created_at')[:5]
-        return render(request, 'users/users.html', {'activetab':'users', 'user_name': user_name(request), 'users': users})
+        return render(request, 'users/users.html', {'activetab':'users', 'user_name': user_name(request), 'user_pk':request.user.pk, 'users': users})
 
     
 def artists(request):
     if not request.user.is_authenticated:
         return redirect('/')
     else:
-        return render(request, 'artists/artists.html', {'activetab':'artists', 'user_name': user_name(request)})
+        artists = Artist.objects.all().order_by('-created_at')[:5]
+        return render(request, 'artists/artists.html', {'activetab':'artists', 'user_name': user_name(request) ,'artists': artists})

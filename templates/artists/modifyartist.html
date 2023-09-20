@@ -87,12 +87,12 @@
     <div class="col-sm-12 col-lg-9 px-4">
         <div class="row main-box">
             <div class="col-12 box-top py-1">
-                <a class="link" href="{% url 'dashboard' %}">Dashboard</a> / <a class="link" href="{% url 'users' %}">Users</a>
+                <a class="link" href="{% url 'dashboard' %}">Dashboard</a> / <a class="link" href="{% url 'artists' %}">Artists</a>
             </div>
             <div class="col-12 box-content px-0 px-lg-4">
                 <div class="mt-2 pb-2">
                     <div class="sidebox-text px-2 py-1 mb-0">
-                        <a href="{% url 'users' %}" class="link">< Modify Users</a>
+                        <a href="{% url 'artists' %}" class="link">< Modify Artists</a>
                     </div>
                     <div class="col-12 mt-0 pt-0" style="background:#333; height:3px;">
                     </div>
@@ -102,19 +102,13 @@
                             {% for user in users %}
                             <div class="col-12 p-0 m-0" style="color:#e61d2f;">
                                 <i>-> </i>
-                                <a class="menu-options" href="{% url 'modifyuser' %}{{user.id}}?page={{page}}">
-                                  {{user.first_name.upper}} {{user.last_name.upper}} 
-                                  <span class="small">
-                                    ({{user.email}})
-                                  </span>
-                                </a>
-                                {% if user_pk == user.id %} <span class="small unselectable">YOU</span> {%endif%}
+                                <a class="menu-options" href="{% url 'modifyartist' %}{{user.id}}?page={{page}}">{{user.name.upper}} <span class="small">({{user.address}})</span></a>
                                 <br>
                             </div>
                             {% endfor %}
                         </div>
                         <div id="success" class="text-danger round p-0 mb-2 justify-content-center d-flex" style="opacity: 0.97; font-style: italic; font-weight: bold;">
-                            {{success}}
+                          {{success}}
                         </div>
                         <!-- Pagination -->
                         <div class="row sidebox-menu py-1">
@@ -130,7 +124,7 @@
                                   <div class="col-12 d-flex justify-content-center">
                                     {% for p in pages %}
                                       <div class="">
-                                        <a class="link pagesnav {% if page == p %}activetab{% endif %}" href="{% url 'modifyuser' %}?page={{p}}">
+                                        <a class="link pagesnav {% if page == p %}activetab{% endif %}" href="{% url 'allartists' %}?page={{p}}">
                                           <span class="unselectable" style="font-size:20px;">{{p}}</span>
                                         </a>
                                       </div>

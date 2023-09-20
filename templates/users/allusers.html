@@ -103,6 +103,7 @@
                             <div class="col-12 p-0 m-0" style="color:#e61d2f;">
                                 <i>-> </i>
                                 <a class="menu-options" href="{% url 'users' %}{{user.id}}?page={{page}}">{{user.first_name.upper}} {{user.last_name.upper}} <span class="small">({{user.email}})</span></a>
+                                {% if user_pk == user.id %} <span class="small unselectable">YOU</span> {%endif%}
                                 <br>
                             </div>
                             {% endfor %}

@@ -12,4 +12,10 @@ urlpatterns = [
     path('users/createnewuser/', usersViews.create_user, name='users_createuser'),
     path('users/modifyuser/', usersViews.modify_user, name='modifyuser'),
     path('users/modifyuser/<int:pk>/', usersViews.update_user),
+    path('artists/all/',artistsViews.show_all_artists, name='allartists'),
+    path('artists/<int:pk>/', artistsViews.artist_detail),
+    # path('artists/<int:pk>/songs', artistsViews.artist_songs),
+    path('artists/addnewartist/', artistsViews.create_artist, name='createartist'),
+    path('artists/modifyartist/', artistsViews.modify_artist, name='modifyartist'),
+    path('artists/modifyartist/<int:pk>/', artistsViews.update_artist),
 ]

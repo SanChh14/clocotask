@@ -21,7 +21,7 @@ def show_all_users(request):
         pages = int(len(users)/8)
         if len(users)%8 != 0:
             pages = pages+1
-        return render(request, 'users/allusers.html',{'user_name':user_name(request) ,'users':users[page_start:page_end], 'pages':range(1,pages+1), 'page':page})
+        return render(request, 'users/allusers.html',{'user_name':user_name(request), 'user_pk':request.user.id, 'users':users[page_start:page_end], 'pages':range(1,pages+1), 'page':page})
 
 def user_detail(request, pk=None):
     if not request.user.is_authenticated:
@@ -109,7 +109,7 @@ def modify_user(request):
                 request.session['success'] = None
         else:
             success = ''
-        return render(request, 'users/modifyuser.html',{'user_name':user_name(request) ,'users':users[page_start:page_end], 'pages':range(1,pages+1), 'page':page, 'success':success})
+        return render(request, 'users/modifyuser.html',{'user_name':user_name(request), 'user_pk':request.user.id, 'users':users[page_start:page_end], 'pages':range(1,pages+1), 'page':page, 'success':success})
 
 def update_user(request, pk=None):
     if not request.user.is_authenticated:
@@ -133,7 +133,6 @@ def update_user(request, pk=None):
                 except:
                     pass
                 pk = request.POST.get('pk').strip()
-                print(pk)
                 first_name = request.POST.get('first_name').strip()
                 last_name = request.POST.get('last_name').strip()
                 email = request.POST.get('email').strip()
@@ -182,7 +181,7 @@ def update_user(request, pk=None):
         else:
             error = ''
             try:
-                user = User.objects.get(pk = pk)
+                user = User.objects.get(pk = int(pk))
                 fields = [user.first_name, user.last_name, user.email, '', user.phone, str(user.dob), user.gender, user.address, user.id]
             except:
                 user = None
