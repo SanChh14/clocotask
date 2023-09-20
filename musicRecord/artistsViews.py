@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import get_user_model
 from datetime import datetime
-from .models import Artist
+from .models import Artist, Music
 
 User = get_user_model()
 current_year = str(datetime.now())[:4]
@@ -31,13 +31,15 @@ def artist_detail(request, pk=None):
     else:
         try:
             artist = Artist.objects.get(pk = pk)
+            songs = Music.objects.all().filter(artist_id=pk).order_by('-created_at')
         except:
             artist = None
+            songs = None
         try:
             page = request.GET.get('page')
         except:
-            page = None
-        return render(request, 'artists/artistdetail.html', {'user_name':user_name(request), 'user':artist, 'page':page})
+            page = 1
+        return render(request, 'artists/artistdetail.html', {'user_name':user_name(request), 'user':artist, 'page':page, 'songs':songs, 'artist_id':pk})
 
 def create_artist(request):
     if not request.user.is_authenticated:

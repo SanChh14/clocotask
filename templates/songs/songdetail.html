@@ -97,9 +97,9 @@
                 <div class="mt-2 pb-2">
                     <div class="sidebox-text px-2 py-1 mb-0">
                         {% if page %}
-                        <a href="{% url 'allartists' %}?page={{page}}" class="link">< Artist Details</a>
+                        <a href="{% url 'artists' %}{{song.artist.id}}/songs/?page={{page}}" class="link">< Song Details</a>
                         {% else %}
-                        <a href="{% url 'allartists' %}" class="link">< Artist Details</a>
+                        <a href="{% url 'artists' %}{{song.artist.id}}/songs/" class="link">< Song Details</a>
                         {% endif %}
                     </div>
                     <div class="col-12 mt-0 pt-0" style="background:#333; height:3px;">
@@ -108,75 +108,23 @@
                         <!-- users -->
                         <div class="row sidebox-menu py-1">
                             <div class="col-12 p-0 m-0" style="color:#e61d2f;">
-                                <i>Name-> </i>
-                                <span class="detail-text">{{user.name.upper}}</span>
+                                <i>Artist Name-> </i>
+                                <span class="detail-text">{{song.artist.name.upper}}</span>
                                 <br>
-                                <i>Date Of Birth-> </i>
-                                <span class="detail-text" >{{user.dob}}</span>
+                                <i>Title-> </i>
+                                <span class="detail-text">{{song.title}}</span>
                                 <br>
-                                <i>Gender-> </i>
-                                <span class="detail-text">{{user.gender}}</span>
+                                <i>Album Name-> </i>
+                                <span class="detail-text" >{{song.album_name}}</span>
                                 <br>
-                                <i>Address-> </i>
-                                <span class="detail-text">{{user.address}}</span>
-                                <br>
-                                <i>First Release Year-> </i>
-                                <span class="detail-text">{{user.first_release_year}}</span>
-                                <br>
-                                <i>No. Of Albums Released-> </i>
-                                <span class="detail-text">{{user.no_of_albums_released}}</span>
+                                <i>Genre-> </i>
+                                <span class="detail-text">{{song.genre}}</span>
                                 <br>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="col-12 box-content px-0 px-lg-4">
-              <div class="pb-2">
-                  <div class="sidebox-text px-2 py-1 mb-0">
-                      <span class="link unselectable">Artist's Recent Songs</span>
-                  </div>
-                  <div class="col-12 mt-0 pt-0" style="background:#333; height:3px;">
-                  </div>
-                  <div class="col-12 sidebox-menus">
-                      <div class="row sidebox-menu py-1">
-                          {% for song in songs %}
-                          <div class="col-12 p-0 m-0" style="color:#e61d2f;">
-                              <i>-> </i>
-                              <a class="menu-options" href="{% url 'artists' %}{{song.artist.id}}/songs/{{song.id}}/">{{song.title}} <span class="small">({{song.album_name}})</span></a>
-                              <br>
-                          </div>
-                          {% endfor %}
-                          <div class="col-12 p-0 m-0" style="color:#e61d2f;">
-                              <i>--> </i>
-                              <a class="menu-options u " href="{% url 'artists' %}{{user.id}}/songs/">(<u>View All</u>)</a>
-                              <br>
-                          </div>
-                      </div>
-                  </div>
-              </div>
-              <div class="pb-2">
-                  <div class="sidebox-text px-2 py-1 mb-0">
-                      <span class="link unselectable">Other Options</span>
-                  </div>
-                  <div class="col-12 mt-0 pt-0" style="background:#333; height:3px;">
-                  </div>
-                  <div class="col-12 sidebox-menus">
-                      <div class="row sidebox-menu py-1">
-                          <div class="col-12 p-0 m-0" style="color:#e61d2f;">
-                                  <i>-> </i>
-                                  <a class="menu-options" href="{% url 'artists' %}{{artist_id}}/addnewsong/">Add A New Song</a>
-                                  <br>
-                          </div>
-                          <div class="col-12 p-0 m-0" style="color:#e61d2f;">
-                          <i>-> </i>
-                              <a class="menu-options" href="{% url 'artists' %}{{artist_id}}/modifysong/">Modify Existing Songs</a>
-                          <br>
-                          </div>
-                      </div>
-                  </div>
-              </div>
-          </div>
         </div>
     </div>
 {% endblock %}
