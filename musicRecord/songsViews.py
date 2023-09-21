@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import get_user_model
 from datetime import datetime
 from .models import Artist, Music
+from django.db import connection
 
 User = get_user_model()
 current_year = str(datetime.now())[:4]
@@ -19,7 +20,8 @@ def artist_songs(request, pk=None):
             page = 1
         page_end = page*8
         page_start = page_end - 8
-        songs = Music.objects.all().filter(artist_id=pk).order_by('-created_at')
+        # songs = Music.objects.all().filter(artist_id=pk).order_by('-created_at')
+        songs = Music.objects.raw(f'select * from musicRecord_Music where artist_id={pk} order by created_at desc')
         pages = int(len(songs)/8)
         if len(songs)%8 != 0:
             pages = pages+1
@@ -38,7 +40,8 @@ def song_detail(request, pk=None, spk=None):
         return redirect('/')
     else:
         try:
-            song = Music.objects.get(pk=spk)
+            # song = Music.objects.get(pk=spk)
+            song = Music.objects.raw(f'select * from musicRecord_Music where id={spk} LIMIT 1')[0]
         except:
             song = None
         try:
@@ -61,20 +64,22 @@ def add_song(request, pk=None):
                 album_name = request.POST.get('album_name').strip()
                 genre = request.POST.get('genre').strip()
            
-                fields = [artist, title, album_name, genre]
+                fields = [title, album_name, genre]
                 
                 #Validating artist info
                 if len(title)==0 or len(album_name)==0 or len(genre)==0:
                     return render(request, 'songs/addsong.html',{'user_name':user_name(request), 'error':'No field should be empty.', 'fields': fields, 'artist_id':pk})
                 if genre not in ['rnb', 'country', 'classic', 'rock', 'jazz']:
                     return render(request, 'songs/addsong.html',{'user_name':user_name(request), 'error':'Invalid Genre.', 'fields': fields, 'artist_id':pk})
-                #Creating song
+                #Creating song using ORM as Artist itself is a foreign key
                 song = Music.objects.create(artist=artist, title=title, album_name=album_name, genre=genre)
                 song.save()
+
                 request.session['success'] = 'Song Added Successfully.'
                 redirecturl = '/dashboard/artists/'+str(pk)+'/addnewsong/'
                 return redirect(redirecturl)
-            except:
+            except Exception as e:
+                print(e)
                 return render(request, 'songs/addsong.html',{'user_name':user_name(request), 'error':'Fill out all the fields correctly.', 'fields': fields, 'artist_id':pk})
         else:
             if request.session.get('success') != None:
@@ -94,7 +99,8 @@ def modify_songs(request, pk=None):
             page = 1
         page_end = page*8
         page_start = page_end - 8
-        songs = Music.objects.all().filter(artist_id=pk).order_by('-created_at')
+        # songs = Music.objects.all().filter(artist_id=pk).order_by('-created_at')
+        songs = Music.objects.raw(f'select * from musicRecord_Music where artist_id={pk} order by created_at desc')
         pages = int(len(songs)/8)
         if len(songs)%8 != 0:
             pages = pages+1
@@ -127,8 +133,18 @@ def update_song(request, pk=None, spk=None):
                 try:
                     delete = request.POST.get('delete').strip()
                     if delete == 'yes':
-                        song = Music.objects.get(pk=int(spk))
-                        song.delete()
+                        # song = Music.objects.get(pk=int(spk))
+                        # song.delete()
+
+                        #Deleting using raw query
+                        sql_query = """
+                            DELETE FROM musicRecord_Music
+                            WHERE id = %s
+                        """
+                        value = spk
+                        with connection.cursor() as cursor:
+                            cursor.execute(sql_query, [value])
+                        
                         request.session['success'] = 'Song deleted successfully.'
                         redirecturl = '/dashboard/artists/'+str(pk)+'/modifysong/'
                         return redirect(redirecturl)
@@ -149,19 +165,34 @@ def update_song(request, pk=None, spk=None):
                     return render(request, 'songs/updatesong.html',{'user_name':user_name(request), 'error':'No field should be empty.', 'fields': fields, 'artist_id':pk, 'page':page})
                 if genre not in ['rnb', 'country', 'classic', 'rock', 'jazz']:
                     return render(request, 'songs/updatesong.html',{'user_name':user_name(request), 'error':'Invalid Genre.', 'fields': fields, 'artist_id':pk, 'page':page})
-                #Updating song
-                song = Music.objects.get(pk=spk)
-                song.title = title
-                song.album_name = album_name
-                song.genre = genre
-                song.save()
+                #Updating song using ORM
+                # song = Music.objects.get(pk=spk)
+                # song.title = title
+                # song.album_name = album_name
+                # song.genre = genre
+                # song.updated_at = datetime.now()
+                # song.save()
+
+                #Updating song using raw query
+                sql_query = """
+                    UPDATE musicRecord_Music
+                    SET title = %s, album_name = %s, genre = %s, updated_at = %s
+                    WHERE id = %s
+                """
+
+                values = [title, album_name, genre, datetime.now(), spk]
+
+                with connection.cursor() as cursor:
+                    cursor.execute(sql_query, values)
+                
                 success = 'Info Updated Successfully.'
                 return render(request, 'songs/updatesong.html',{'user_name':user_name(request), 'success':success, 'fields': fields, 'artist_id':pk, 'page':page})
             except:
                 return render(request, 'songs/updatesong.html',{'user_name':user_name(request), 'error':'Fill out all the fields correctly.', 'fields': fields, 'artist_id':pk, 'page':page})
         else:
             try:
-                song = Music.objects.get(pk=spk)
+                # song = Music.objects.get(pk=spk)
+                song = Music.objects.raw(f'select * from musicRecord_Music where id={spk} LIMIT 1')[0]
                 fields = [song.title, song.album_name, song.genre]
             except:
                 return render(request, 'songs/updatesong.html', {'user_name':user_name(request), 'artist_id':pk, 'error':'Song not found.', 'page':page})

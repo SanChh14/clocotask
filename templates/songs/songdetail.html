@@ -120,6 +120,12 @@
                                 <i>Genre-> </i>
                                 <span class="detail-text">{{song.genre}}</span>
                                 <br>
+                                <i>Update At-> </i>
+                                <span class="detail-text" href="{% url 'users' %}{{user.id}}">{{song.updated_at}}</span>
+                                <br>
+                                <i>Created At-> </i>
+                                <span class="detail-text" href="{% url 'users' %}{{user.id}}">{{song.created_at}}</span>
+                                <br>
                             </div>
                         </div>
                     </div>

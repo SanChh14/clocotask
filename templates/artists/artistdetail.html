@@ -126,6 +126,12 @@
                                 <i>No. Of Albums Released-> </i>
                                 <span class="detail-text">{{user.no_of_albums_released}}</span>
                                 <br>
+                                <i>Update At-> </i>
+                                <span class="detail-text" href="{% url 'users' %}{{user.id}}">{{user.updated_at}}</span>
+                                <br>
+                                <i>Created At-> </i>
+                                <span class="detail-text" href="{% url 'users' %}{{user.id}}">{{user.created_at}}</span>
+                                <br>
                             </div>
                         </div>
                     </div>

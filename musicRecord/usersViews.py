@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import get_user_model
 from datetime import datetime
+from django.db import connection
 
 User = get_user_model()
 
@@ -17,7 +18,8 @@ def show_all_users(request):
             page = 1
         page_end = page*8
         page_start = page_end - 8
-        users = User.objects.all().order_by('-created_at')
+        # users = User.objects.all().order_by('-created_at')
+        users = User.objects.raw('select * from accounts_User order by created_at desc')
         pages = int(len(users)/8)
         if len(users)%8 != 0:
             pages = pages+1
@@ -28,7 +30,8 @@ def user_detail(request, pk=None):
         return redirect('/')
     else:
         try:
-            user = User.objects.get(pk = pk)
+            # user = User.objects.get(pk = pk)
+            user = User.objects.raw(f'select * from accounts_User where id={pk} LIMIT 1')[0]
         except:
             user = None
         try:
@@ -70,7 +73,7 @@ def create_user(request):
                 except:
                     return render(request, 'users/createuser.html', {'user_name':user_name(request), 'error':'Enter correct date of birth.', 'activetab': 'createuser', 'fields':fields})
 
-                #Creating the user 
+                #Creating the user
                 user = User.objects.create_superuser(email=email, password=password, phone=phone)
                 user.first_name = first_name
                 user.last_name = last_name
@@ -78,9 +81,11 @@ def create_user(request):
                 user.gender = gender
                 user.address = address
                 user.save()
+
                 request.session['success'] = 'Account Created Successfully'
                 return redirect('/dashboard/users/createnewuser/')
-            except:
+            except Exception as e:
+                print(e)
                 return render(request, 'users/createuser.html',{'user_name':user_name(request), 'error':'Fill out all the fields correctly.', 'activetab': 'createuser', 'fields': fields})
         else:
             if request.session.get('success') != None:
@@ -100,7 +105,8 @@ def modify_user(request):
             page = 1
         page_end = page*8
         page_start = page_end - 8
-        users = User.objects.all().order_by('-created_at')
+        # users = User.objects.all().order_by('-created_at')
+        users = User.objects.raw('select * from accounts_User order by created_at desc')
         pages = int(len(users)/8)
         if len(users)%8 != 0:
             pages = pages+1
@@ -172,6 +178,7 @@ def update_user(request, pk=None):
                 user.dob = dob
                 user.gender = gender
                 user.address = address
+                user.updated_at = datetime.now()
                 user.save()
                 return render(request, 'users/updateuser.html',{'user_name':user_name(request), 'success':'Info Updated Successfully.','page': page, 'fields': fields})
             except:
@@ -181,7 +188,8 @@ def update_user(request, pk=None):
         else:
             error = ''
             try:
-                user = User.objects.get(pk = int(pk))
+                # user = User.objects.get(pk = int(pk))
+                user = User.objects.raw(f'select * from accounts_User where id={pk} LIMIT 1')[0]
                 fields = [user.first_name, user.last_name, user.email, '', user.phone, str(user.dob), user.gender, user.address, user.id]
             except:
                 user = None
