@@ -72,7 +72,7 @@ def add_song(request, pk=None):
                 if genre not in ['rnb', 'country', 'classic', 'rock', 'jazz']:
                     return render(request, 'songs/addsong.html',{'user_name':user_name(request), 'error':'Invalid Genre.', 'fields': fields, 'artist_id':pk})
                 #Creating song using ORM as Artist itself is a foreign key
-                song = Music.objects.create(artist=artist, title=title, album_name=album_name, genre=genre)
+                song = Music.objects.create(artist=artist, title=title, album_name=album_name, genre=genre, created_at = datetime.now(), updated_at=datetime.now())
                 song.save()
 
                 request.session['success'] = 'Song Added Successfully.'

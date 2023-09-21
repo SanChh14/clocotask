@@ -81,6 +81,8 @@ def create_artist(request):
                 # user.address = address
                 # user.first_release_date = first_release_year
                 # user.no_of_albums_released = int(no_of_albums_released)
+                # user.created_at = datetime.now()
+                # user.updated_at = datetime.now()
                 # user.save()
 
                 #Creating artist using raw query

@@ -80,6 +80,8 @@ def create_user(request):
                 user.dob = dob
                 user.gender = gender
                 user.address = address
+                user.created_at = datetime.now()
+                user.updated_at = datetime.now()
                 user.save()
 
                 request.session['success'] = 'Account Created Successfully'
@@ -167,7 +169,7 @@ def update_user(request, pk=None):
                 except:
                     return render(request, 'users/updateuser.html', {'user_name':user_name(request), 'error':'Enter correct date of birth.', 'page': page, 'fields':fields})
 
-                #Updating the user 
+                #Updating the user using ORM for security reasons
                 user = User.objects.get(pk=int(pk))
                 user.email = email
                 if password != '':
