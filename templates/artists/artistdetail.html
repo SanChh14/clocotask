@@ -148,10 +148,17 @@
                       <div class="row sidebox-menu py-1">
                           {% for song in songs %}
                           <div class="col-12 p-0 m-0" style="color:#e61d2f;">
-                              <i>-> </i>
-                              <a class="menu-options" href="{% url 'artists' %}{{song.artist.id}}/songs/{{song.id}}/">{{song.title}} <span class="small">({{song.album_name}})</span></a>
-                              <br>
+                              <div class="d-flex justify-content-between">
+                                <div>
+                                  <i>-> </i>
+                                  <a id="{{song.id}}" class="menu-options" href="{% url 'artists' %}{{song.artist.id}}/songs/{{song.id}}/">{{song.title}} <span class="small">({{song.album_name}})</span></a>
+                                </div>
+                                <div>
+                                  <button id="btn{{song.id}}" onclick="hide({{song.id}})">🙉</button>
+                                </div>
+                              </div>
                           </div>
+                          <br>
                           {% endfor %}
                           <div class="col-12 p-0 m-0" style="color:#e61d2f;">
                               <i>--> </i>
@@ -188,4 +195,19 @@
 {% endblock %}
 
 {% block scripts %}
+
+let hide =(id)=>{
+  song = document.getElementById(id);
+  btn = document.getElementById('btn'+id);
+  if(song.style.display == 'none'){
+    song.style.display = 'inline-block';
+    btn.textContent = '🙉';
+  }
+  else{
+    song.style.display = 'none';
+    btn.textContent = '🙈';
+  }
+}
+
+
 {% endblock %}

@@ -20,10 +20,18 @@ def show_all_users(request):
         page_start = page_end - 8
         # users = User.objects.all().order_by('-created_at')
         users = User.objects.raw('select * from accounts_User order by created_at desc')
+        hiddenemails = []
+        for user in users:
+            emlen = len(user.email.split('@')[0])
+            star = '*'*(emlen-1)
+            hiddenemails.append(user.email.split('@')[0][:1]+star+'@'+user.email.split('@')[1])
+        newlist = []
+        for user, hiddenemail in zip(users, hiddenemails):
+            newlist.append((user, hiddenemail))
         pages = int(len(users)/8)
         if len(users)%8 != 0:
             pages = pages+1
-        return render(request, 'users/allusers.html',{'user_name':user_name(request), 'user_pk':request.user.id, 'users':users[page_start:page_end], 'pages':range(1,pages+1), 'page':page})
+        return render(request, 'users/allusers.html',{'user_name':user_name(request), 'user_pk':request.user.id, 'users':newlist[page_start:page_end], 'pages':range(1,pages+1), 'page':page})
 
 def user_detail(request, pk=None):
     if not request.user.is_authenticated:
